@@ -1,6 +1,7 @@
 {
     "name": "dicr/yii2-exec",
     "type": "yii2-extension",
+    "license": "MIT",
     "description": "Выполнение консольных команд в Yii2",
     "keywords": ["dicr", "shell", "exec", "yii2"],
     "homepage": "https://gitlab.com/dicr/yii2-exec",
