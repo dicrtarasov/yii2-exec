@@ -39,13 +39,15 @@ class LocalExec extends Component implements ExecInterface
      *
      * @return string[]
      */
-    public static function disabledFuncs() : array
+    public static function disabledFunctions() : array
     {
         /** @var array запрещенные функции */
         static $fns;
 
-        if (! isset($fns)) {
-            $disabledList = ini_get('disable_functions') . ',' . ini_get('suhosin.executor.func.blacklist');
+        if ($fns === null) {
+            $disabledList = ini_get('disable_functions') . ' ' .
+                ini_get('suhosin.executor.func.blacklist');
+
             $fns = preg_split('~[\s\,]+~um', $disabledList, - 1, PREG_SPLIT_NO_EMPTY);
         }
 
@@ -60,7 +62,7 @@ class LocalExec extends Component implements ExecInterface
      */
     public static function isDisabled(string $func) : bool
     {
-        return ! function_exists($func) || in_array($func, self::disabledFuncs());
+        return ! function_exists($func) || in_array($func, self::disabledFunctions());
     }
 
     /**
@@ -82,12 +84,12 @@ class LocalExec extends Component implements ExecInterface
         $command = escapeshellcmd($cmd);
 
         if (! empty($args)) {
-            $args = array_filter($args, static function($val) {
+            $args = array_filter($args, static function($val) : bool {
                 return $val !== null;
             });
 
             if (! isset($opts['escape']) || $opts['escape']) {
-                $args = array_map(static function($arg) {
+                $args = array_map(static function($arg) : string {
                     return escapeshellarg($arg);
                 }, $args);
             }
@@ -222,7 +224,7 @@ class LocalExec extends Component implements ExecInterface
      * @return string вывод команды
      * @throws ExecException
      */
-    public static function procOpen(string $cmd, array $args = [], array $opts = [])
+    public static function procOpen(string $cmd, array $args = [], array $opts = []) : string
     {
         $cmd = self::createCommand($cmd, $args, $opts);
         Yii::debug('Запуск proc_open: ' . $cmd, __METHOD__);
@@ -230,7 +232,7 @@ class LocalExec extends Component implements ExecInterface
         $pipes = [];
 
         $proc = proc_open($cmd, [
-            0 => ['file', '/dev/null', 'r'],
+            //0 => ['file', '/dev/null', 'r'],
             1 => ['pipe', 'w'],
             2 => ['pipe', 'w']
         ], $pipes);

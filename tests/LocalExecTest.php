@@ -52,7 +52,7 @@ class LocalExecTest extends TestCase
     /**
      * @throws InvalidConfigException
      */
-    public function testCreateCommand()
+    public function testCreateCommand() : void
     {
         $exec = self::exec();
         self::assertSame("ps 'a' 'a b'", $exec::createCommand('ps', ['a', 'a b']));
@@ -62,7 +62,7 @@ class LocalExecTest extends TestCase
      * @throws InvalidConfigException
      * @throws ExecException
      */
-    public function testExec()
+    public function testExec() : void
     {
         $ret = self::exec()::exec(self::CMD, self::ARGS);
         self::assertSame(self::date(), trim($ret));
@@ -72,7 +72,7 @@ class LocalExecTest extends TestCase
      * @throws ExecException
      * @throws InvalidConfigException
      */
-    public function testPassthru()
+    public function testPassthru() : void
     {
         $ret = self::exec()::passthru(self::CMD, self::ARGS);
         self::assertSame(self::date(), trim($ret));
@@ -82,7 +82,7 @@ class LocalExecTest extends TestCase
      * @throws ExecException
      * @throws InvalidConfigException
      */
-    public function testProcOpen()
+    public function testProcOpen() : void
     {
         $ret = self::exec()::procOpen(self::CMD, self::ARGS);
         self::assertSame(self::date(), trim($ret));
@@ -92,7 +92,7 @@ class LocalExecTest extends TestCase
      * @throws ExecException
      * @throws InvalidConfigException
      */
-    public function testPopen()
+    public function testPopen() : void
     {
         $ret = self::exec()::popen(self::CMD, self::ARGS);
         self::assertSame(self::date(), trim($ret));
@@ -102,7 +102,7 @@ class LocalExecTest extends TestCase
      * @throws ExecException
      * @throws InvalidConfigException
      */
-    public function testShellExec()
+    public function testShellExec() : void
     {
         $ret = self::exec()::shellExec(self::CMD, self::ARGS);
         self::assertSame(self::date(), trim($ret));
@@ -113,7 +113,7 @@ class LocalExecTest extends TestCase
      * @throws ExecException
      * @throws InvalidConfigException
      */
-    public function testSystem()
+    public function testSystem() : void
     {
         $ret = self::exec()::system(self::CMD, self::ARGS);
         self::assertSame(self::date(), trim($ret));
@@ -123,7 +123,7 @@ class LocalExecTest extends TestCase
      * @throws ExecException
      * @throws InvalidConfigException
      */
-    public function testRun()
+    public function testRun() : void
     {
         $ret = self::exec()->run(self::CMD, self::ARGS);
         self::assertSame(self::date(), trim($ret));
