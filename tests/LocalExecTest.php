@@ -23,27 +23,20 @@ use function trim;
  */
 class LocalExecTest extends TestCase
 {
-    /** @var string */
     public const CMD = 'date';
 
-    /** @var string[] */
     public const ARGS = ['-u', '+%y%m%d'];
 
     /**
      * Exec.
      *
-     * @return LocalExec
      * @throws InvalidConfigException
      */
     private static function exec() : LocalExec
     {
-        /** @noinspection PhpIncompatibleReturnTypeInspection */
         return Yii::$app->get('exec');
     }
 
-    /**
-     * @return string
-     */
     private static function date() : string
     {
         return gmdate('ymd');
@@ -128,5 +121,4 @@ class LocalExecTest extends TestCase
         $ret = self::exec()->run(self::CMD, self::ARGS);
         self::assertSame(self::date(), trim($ret));
     }
-
 }

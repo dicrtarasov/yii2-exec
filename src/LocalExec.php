@@ -41,7 +41,7 @@ class LocalExec extends Component implements ExecInterface
      */
     public static function disabledFunctions() : array
     {
-        /** @var array запрещенные функции */
+        /** @var string[] запрещенные функции */
         static $fns;
 
         if ($fns === null) {
@@ -58,7 +58,6 @@ class LocalExec extends Component implements ExecInterface
      * Проверяет запрещена ли функция.
      *
      * @param string $func название функции
-     * @return bool
      */
     public static function isDisabled(string $func) : bool
     {
@@ -69,10 +68,9 @@ class LocalExec extends Component implements ExecInterface
      * Создает команду для запуска.
      *
      * @param string $cmd команда
-     * @param array $args аргументы
+     * @param string[] $args аргументы
      * @param array $opts опции
      * - bool $escape экранировать аргументы
-     * @return string
      */
     public static function createCommand(string $cmd, array $args = [], array $opts = []) : string
     {
@@ -84,14 +82,10 @@ class LocalExec extends Component implements ExecInterface
         $command = escapeshellcmd($cmd);
 
         if (! empty($args)) {
-            $args = array_filter($args, static function($val) : bool {
-                return $val !== null;
-            });
+            $args = array_filter($args, static fn($val) : bool => $val !== null);
 
             if (! isset($opts['escape']) || $opts['escape']) {
-                $args = array_map(static function($arg) : string {
-                    return escapeshellarg($arg);
-                }, $args);
+                $args = array_map(static fn($arg) : string => escapeshellarg($arg), $args);
             }
 
             $command .= ' ' . implode(' ', $args);
@@ -104,7 +98,7 @@ class LocalExec extends Component implements ExecInterface
      * Выполняет exec
      *
      * @param string $cmd команда
-     * @param array $args аргументы
+     * @param string[] $args аргументы
      * @param array $opts опции
      *        - escape bool экранировать аргументы
      * @return string вывод команды
@@ -132,7 +126,7 @@ class LocalExec extends Component implements ExecInterface
      * Выполняет passthru
      *
      * @param string $cmd команда
-     * @param array $args аргументы
+     * @param string[] $args аргументы
      * @param array $opts опции
      * - bool $escape экранировать аргументы
      * @return string вывод команды
@@ -161,7 +155,7 @@ class LocalExec extends Component implements ExecInterface
      * Выполняет shell_exec
      *
      * @param string $cmd команда
-     * @param array $args аргументы
+     * @param string[] $args аргументы
      * @param array $opts опции
      * - bool $escape экранировать аргументы
      * @return string вывод команды
@@ -184,7 +178,7 @@ class LocalExec extends Component implements ExecInterface
      * Выполняет proc_open
      *
      * @param string $cmd команда
-     * @param array $args аргументы
+     * @param string[] $args аргументы
      * @param array $opts опции
      * - bool $escape экранировать аргументы
      * @return string вывод команды
@@ -218,7 +212,7 @@ class LocalExec extends Component implements ExecInterface
      * Выполняет proc_open.
      *
      * @param string $cmd команда
-     * @param array $args аргументы
+     * @param string[] $args аргументы
      * @param array $opts опции
      * - bool $escape экранировать аргументы
      * @return string вывод команды
@@ -260,7 +254,7 @@ class LocalExec extends Component implements ExecInterface
      * ВНИМАНИЕ! Возвращает только последнюю строку вывода!
      *
      * @param string $cmd команда
-     * @param array $args аргументы
+     * @param string[] $args аргументы
      * @param array $opts опции
      * - bool $escape экранировать аргументы
      * @return string последняя строка вывода команды
@@ -287,24 +281,22 @@ class LocalExec extends Component implements ExecInterface
     /**
      * @inheritdoc
      */
-    public function run(string $cmd, array $args = [], array $opts = []) : string
+    public function run(string $cmd, array $args = [], array $options = []) : string
     {
-        $out = null;
-
         if (! self::isDisabled('exec')) {
-            $out = self::exec($cmd, $args, $opts);
+            $out = self::exec($cmd, $args, $options);
         } elseif (! self::isDisabled('shell_exec')) {
-            $out = self::shellExec($cmd, $args, $opts);
+            $out = self::shellExec($cmd, $args, $options);
         } elseif (! self::isDisabled('passthru')) {
-            $out = self::passthru($cmd, $args, $opts);
+            $out = self::passthru($cmd, $args, $options);
         } elseif (! self::isDisabled('popen')) {
-            $out = self::popen($cmd, $args, $opts);
+            $out = self::popen($cmd, $args, $options);
         } elseif (! self::isDisabled('proc_open')) {
-            $out = self::procOpen($cmd, $args, $opts);
+            $out = self::procOpen($cmd, $args, $options);
         } elseif (! self::isDisabled('system')) {
-            $out = self::system($cmd, $args, $opts);
+            $out = self::system($cmd, $args, $options);
         } /** @noinspection InvertedIfElseConstructsInspection */ else {
-            throw new ExecException(self::createCommand($cmd, $args, $opts), 'Все функции запрещены');
+            throw new ExecException(self::createCommand($cmd, $args, $options), 'Все функции запрещены');
         }
 
         return $out;

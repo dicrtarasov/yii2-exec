@@ -5,17 +5,17 @@
     "description": "Выполнение консольных команд в Yii2",
     "keywords": ["dicr", "shell", "exec", "yii2"],
     "homepage": "https://gitlab.com/dicr/yii2-exec",
-    "support": {
-        "source": "https://gitlab.com/dicr/yii2-exec.git"
-    },
     "authors": [
         {
             "name": "Igor Tarasov",
             "email": "develop@dicr.org",
-            "homepage": "http://dicr.org",
+            "homepage": "https://dicr.org",
             "role": "developer"
         }
     ],
+    "support": {
+        "source": "https://gitlab.com/dicr/yii2-exec.git"
+    },
     "minimum-stability": "stable",
     "autoload": {
         "psr-4": {
@@ -28,12 +28,12 @@
         }
     },
     "require": {
-        "php": "~7.3",
+        "php": "~8.0",
         "yiisoft/yii2": "~2.0"
     },
     "require-dev": {
-        "roave/security-advisories": "dev-master",
-        "phpunit/phpunit": "~9.4"
+        "roave/security-advisories": "dev-latest",
+        "phpunit/phpunit": "~9.5"
     },
     "repositories": [
         {"type": "composer", "url": "https://asset-packagist.org"}

@@ -18,8 +18,7 @@ use yii\base\InvalidArgumentException;
  */
 class ExecException extends Exception
 {
-    /** @var string выполняемая команда */
-    protected $cmd;
+    protected string $cmd;
 
     /**
      * {@inheritDoc}
@@ -52,8 +51,6 @@ class ExecException extends Exception
 
     /**
      * Возвращает команду
-     *
-     * @return string
      */
     public function getCmd() : string
     {
